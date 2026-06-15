@@ -1,3 +1,4 @@
+import CalendarComponent from "../components/Calendar";
 import { useState } from "react";
 
 function MainPage() {
@@ -71,20 +72,22 @@ function MainPage() {
       <header className="mb-8">
         <h1 className="text-4xl font-bold text-sky-500">PlanE</h1>
 
-        <p className="text-slate-500 mt-2">오늘의 일정을 관리해보세요</p>
+        <p className="text-slate-500 mt-2">오늘의 일정을 관리해 보세요!</p>
       </header>
 
       <main className="max-w-5xl mx-auto">
-        <div className="grid grid-cols-2 gap-6 mb-6">
-          <section className="bg-white rounded-3xl shadow-xl p-6 h-72">
-            <h2 className="text-2xl font-bold text-sky-500 mb-4">달력</h2>
+        <div className="grid grid-cols-2 gap-6 mb-10">
+          <section className="bg-white rounded-3xl shadow-xl p-6 h-90">
+            <h2 className="text-2xl font-bold text-sky-500 mb-4">
+              📅 달력
+            </h2>
 
-            <div className="h-48 bg-sky-50 rounded-2xl flex items-center justify-center text-sky-500">
-              Calendar
+            <div className="h-65">
+              <CalendarComponent />
             </div>
           </section>
 
-          <section className="bg-white rounded-3xl shadow-xl p-6 h-72">
+          <section className="bg-white rounded-3xl shadow-xl p-6 h-90">
             <h2 className="text-2xl font-bold text-sky-500 mb-4">
               할 일 입력
             </h2>
@@ -133,7 +136,7 @@ function MainPage() {
                     <div className="flex items-center gap-3 flex-1">
                       <button
                         onClick={() => handleToggleComplete(todo.id)}
-                        className="w-6 h-6 rounded-full border border-sky-500 bg-white flex items-center justify-center text-sky-500"
+                        className="w-7 h-7 rounded-full border border-sky-500 bg-white flex items-center justify-center text-sky-500"
                       >
                         {todo.completed ? "✓" : ""}
                       </button>
@@ -212,7 +215,7 @@ function MainPage() {
 
                           <button
                             onClick={() => handleDeleteTodo(todo.id)}
-                            className="bg-white px-3 py-1 rounded-lg text-slate-500 hover:bg-slate-100"
+                            className="bg-white px-3 py-1 rounded-lg text-red-400 hover:bg-red-50"
                           >
                             삭제
                           </button>
