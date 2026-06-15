@@ -20,17 +20,14 @@ function LoginPage() {
           className="w-full border border-pink-200 rounded-xl p-3 mb-6"
         />
 
-        <button
-          className="w-full bg-pink-300 hover:bg-pink-400 text-white py-3 rounded-xl mb-4"
-        >
-          로그인
-        </button>
+        <Link to="/main">
+          <button className="w-full bg-pink-300 hover:bg-pink-400 text-white py-3 rounded-xl mb-4">
+            로그인
+          </button>
+        </Link>
 
         <div className="text-center">
-          <Link
-            to="/signup"
-            className="text-pink-400 hover:text-pink-500"
-          >
+          <Link to="/signup" className="text-pink-400 hover:text-pink-500">
             회원가입
           </Link>
         </div>
