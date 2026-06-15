@@ -3,6 +3,9 @@ import { useState } from "react";
 function MainPage() {
   const [todo, setTodo] = useState("");
   const [todos, setTodos] = useState([]);
+  const [selectedTodoId, setSelectedTodoId] = useState(null);
+
+  const emojiList = ["😊", "😍", "😐", "😭", "🔥", "😴"];
 
   const handleAddTodo = () => {
     if (todo.trim() === "") return;
@@ -21,21 +24,19 @@ function MainPage() {
   const handleToggleComplete = (id) => {
     setTodos(
       todos.map((todo) =>
-        todo.id === id
-          ? { ...todo, completed: !todo.completed }
-          : todo
+        todo.id === id ? { ...todo, completed: !todo.completed } : todo
       )
     );
   };
 
-  const handleAddEmoji = (id) => {
+  const handleSelectEmoji = (id, emoji) => {
     setTodos(
       todos.map((todo) =>
-        todo.id === id
-          ? { ...todo, emoji: "💗" }
-          : todo
+        todo.id === id ? { ...todo, emoji } : todo
       )
     );
+
+    setSelectedTodoId(null);
   };
 
   const handleEditTodo = (id) => {
@@ -45,9 +46,7 @@ function MainPage() {
 
     setTodos(
       todos.map((todo) =>
-        todo.id === id
-          ? { ...todo, text: newText }
-          : todo
+        todo.id === id ? { ...todo, text: newText } : todo
       )
     );
   };
@@ -105,59 +104,72 @@ function MainPage() {
           ) : (
             <div className="space-y-3">
               {todos.map((todo) => (
-                <div
-                  key={todo.id}
-                  className="bg-pink-100 rounded-2xl p-4 flex items-center justify-between"
-                >
-                  <div className="flex items-center gap-3">
-                    <button
-                      onClick={() => handleToggleComplete(todo.id)}
-                      className="w-6 h-6 rounded-full border border-pink-400 bg-white flex items-center justify-center text-pink-400"
-                    >
-                      {todo.completed ? "✓" : ""}
-                    </button>
-
-                    <div>
-                      <p
-                        className={
-                          todo.completed
-                            ? "line-through text-pink-300"
-                            : "text-pink-500"
-                        }
+                <div key={todo.id} className="bg-pink-100 rounded-2xl p-4">
+                  <div className="flex items-center justify-between">
+                    <div className="flex items-center gap-3">
+                      <button
+                        onClick={() => handleToggleComplete(todo.id)}
+                        className="w-6 h-6 rounded-full border border-pink-400 bg-white flex items-center justify-center text-pink-400"
                       >
-                        {todo.text}
-                      </p>
+                        {todo.completed ? "✓" : ""}
+                      </button>
 
-                      {todo.emoji && (
-                        <p className="text-sm text-pink-400 mt-1">
-                          리뷰 {todo.emoji}
+                      <div>
+                        <p
+                          className={
+                            todo.completed
+                              ? "line-through text-pink-300"
+                              : "text-pink-500"
+                          }
+                        >
+                          {todo.text}
                         </p>
-                      )}
+
+                        {todo.emoji && (
+                          <p className="text-sm text-pink-400 mt-1">
+                            오늘의 리뷰 {todo.emoji}
+                          </p>
+                        )}
+                      </div>
+                    </div>
+
+                    <div className="flex gap-2">
+                      <button
+                        onClick={() => setSelectedTodoId(todo.id)}
+                        className="bg-white px-3 py-1 rounded-lg hover:bg-pink-50"
+                      >
+                        리뷰
+                      </button>
+
+                      <button
+                        onClick={() => handleEditTodo(todo.id)}
+                        className="bg-white px-3 py-1 rounded-lg text-pink-400 hover:bg-pink-50"
+                      >
+                        수정
+                      </button>
+
+                      <button
+                        onClick={() => handleDeleteTodo(todo.id)}
+                        className="bg-white px-3 py-1 rounded-lg text-pink-400 hover:bg-pink-50"
+                      >
+                        삭제
+                      </button>
                     </div>
                   </div>
 
-                  <div className="flex gap-2">
-                    <button
-                      onClick={() => handleAddEmoji(todo.id)}
-                      className="bg-white px-3 py-1 rounded-lg hover:bg-pink-50"
-                    >
-                      리뷰
-                    </button>
-
-                    <button
-                      onClick={() => handleEditTodo(todo.id)}
-                      className="bg-white px-3 py-1 rounded-lg text-pink-400 hover:bg-pink-50"
-                    >
-                      수정
-                    </button>
-
-                    <button
-                      onClick={() => handleDeleteTodo(todo.id)}
-                      className="bg-white px-3 py-1 rounded-lg text-pink-400 hover:bg-pink-50"
-                    >
-                      삭제
-                    </button>
-                  </div>
+                  {selectedTodoId === todo.id && (
+                    <div className="flex gap-2 mt-3 ml-9">
+                      {emojiList.map((emoji) => (
+                        <button
+                          key={emoji}
+                          onClick={() => handleSelectEmoji(todo.id, emoji)}
+                          className="bg-white w-9 h-9 rounded-full hover:bg-pink-50"
+                        >
+                          {emoji}
+                        </button>
+                      ))}
+                    </div>
+                  )}
                 </div>
               ))}
             </div>
