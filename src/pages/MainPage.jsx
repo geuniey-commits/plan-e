@@ -1,29 +1,30 @@
-import CalendarComponent from "../components/Calendar";
 import { useState } from "react";
+import CalendarComponent from "../components/Calendar";
 
 function MainPage() {
+  const today = new Date();
+  const todayString = `${today.getFullYear()}-${String(
+    today.getMonth() + 1
+  ).padStart(2, "0")}-${String(today.getDate()).padStart(2, "0")}`;
+
   const [todo, setTodo] = useState("");
   const [todos, setTodos] = useState([]);
   const [selectedTodoId, setSelectedTodoId] = useState(null);
   const [editingTodoId, setEditingTodoId] = useState(null);
   const [editingText, setEditingText] = useState("");
+  const [selectedDate, setSelectedDate] = useState(todayString);
 
   const emojiList = ["😊", "😍", "😐", "😭", "🔥", "😴"];
 
   const handleAddTodo = () => {
     if (todo.trim() === "") return;
 
-    const today = new Date();
-
     const newTodo = {
       id: Date.now(),
       text: todo,
       completed: false,
       emoji: "",
-      date: `${today.getFullYear()}-${String(today.getMonth() + 1).padStart(
-      2,
-      "0"
-      )}-${String(today.getDate()).padStart(2, "0")}`,
+      date: selectedDate,
     };
 
     setTodos([...todos, newTodo]);
@@ -77,7 +78,6 @@ function MainPage() {
     <div className="min-h-screen bg-slate-50 p-10">
       <header className="mb-10 text-center">
         <h1 className="text-4xl font-bold text-sky-500">PlanE</h1>
-
         <p className="text-slate-500 mt-2">오늘의 일정을 관리해 보세요!</p>
       </header>
 
@@ -89,14 +89,22 @@ function MainPage() {
             </h2>
 
             <div className="h-68">
-              <CalendarComponent todos={todos} />
+              <CalendarComponent
+                todos={todos}
+                selectedDate={selectedDate}
+                onSelectDate={setSelectedDate}
+              />
             </div>
           </section>
 
           <section className="bg-white rounded-3xl shadow-xl p-6 h-93">
-            <h2 className="text-2xl font-bold text-sky-500 mb-4">
+            <h2 className="text-2xl font-bold text-sky-500 mb-2">
               할 일 입력
             </h2>
+
+            <p className="text-sm text-slate-400 mb-4">
+              선택한 날짜: {selectedDate}
+            </p>
 
             <input
               type="text"
@@ -122,8 +130,9 @@ function MainPage() {
             >
               작성
             </button>
+
             <p className="mt-4 text-sm text-slate-400 text-center">
-                Enter 키를 눌러도 할 일을 추가할 수 있어요.
+              Enter 키를 눌러도 할 일을 추가할 수 있어요
             </p>
           </section>
         </div>
@@ -176,6 +185,10 @@ function MainPage() {
                             {todo.text}
                           </p>
                         )}
+
+                        <p className="text-sm text-slate-400 mt-1">
+                          {todo.date}
+                        </p>
 
                         {todo.emoji && (
                           <p className="text-sm text-sky-600 mt-1">

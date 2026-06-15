@@ -1,6 +1,6 @@
 import { useState } from "react";
 
-function CalendarComponent({ todos }) {
+function CalendarComponent({ todos, selectedDate, onSelectDate }) {
   const [currentDate, setCurrentDate] = useState(new Date());
 
   const days = ["일", "월", "화", "수", "목", "금", "토"];
@@ -16,12 +16,10 @@ function CalendarComponent({ todos }) {
 
   const today = new Date();
 
-  const handlePrevMonth = () => {
-    setCurrentDate(new Date(year, month - 1, 1));
-  };
-
-  const handleNextMonth = () => {
-    setCurrentDate(new Date(year, month + 1, 1));
+  const formatDate = (date) => {
+    return `${year}-${String(month + 1).padStart(2, "0")}-${String(
+      date
+    ).padStart(2, "0")}`;
   };
 
   const isToday = (date) => {
@@ -33,11 +31,15 @@ function CalendarComponent({ todos }) {
   };
 
   const hasTodo = (date) => {
-    const calendarDate = `${year}-${String(month + 1).padStart(2, "0")}-${String(
-      date
-    ).padStart(2, "0")}`;
+    return todos.some((todo) => todo.date === formatDate(date));
+  };
 
-    return todos.some((todo) => todo.date === calendarDate);
+  const handlePrevMonth = () => {
+    setCurrentDate(new Date(year, month - 1, 1));
+  };
+
+  const handleNextMonth = () => {
+    setCurrentDate(new Date(year, month + 1, 1));
   };
 
   return (
@@ -73,26 +75,34 @@ function CalendarComponent({ todos }) {
           <div key={`empty-${index}`} />
         ))}
 
-        {dates.map((date) => (
-          <button
-            key={date}
-            className={`h-7 rounded-full text-xs flex flex-col items-center justify-center ${
-              isToday(date)
-                ? "bg-sky-500 text-white font-bold shadow-md"
-                : "text-slate-600 hover:bg-sky-100"
-            }`}
-          >
-            <span>{date}</span>
+        {dates.map((date) => {
+          const dateString = formatDate(date);
+          const isSelected = selectedDate === dateString;
 
-            {hasTodo(date) && (
-              <span
-                className={`w-1 h-1 rounded-full mt-0.5 ${
-                  isToday(date) ? "bg-white" : "bg-sky-500"
-                }`}
-              />
-            )}
-          </button>
-        ))}
+          return (
+            <button
+              key={date}
+              onClick={() => onSelectDate(dateString)}
+              className={`h-7 rounded-full text-xs flex flex-col items-center justify-center ${
+                isSelected
+                  ? "bg-sky-500 text-white font-bold shadow-md"
+                  : isToday(date)
+                  ? "border border-sky-400 text-sky-600 font-bold"
+                  : "text-slate-600 hover:bg-sky-100"
+              }`}
+            >
+              <span>{date}</span>
+
+              {hasTodo(date) && (
+                <span
+                  className={`w-1 h-1 rounded-full mt-0.5 ${
+                    isSelected ? "bg-white" : "bg-sky-500"
+                  }`}
+                />
+              )}
+            </button>
+          );
+        })}
       </div>
     </div>
   );
