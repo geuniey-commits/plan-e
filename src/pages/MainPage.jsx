@@ -116,6 +116,9 @@ function MainPage() {
             >
               작성
             </button>
+            <p className="mt-4 text-sm text-slate-400 text-center">
+                Enter 키를 눌러도 할 일을 추가할 수 있어요.
+            </p>
           </section>
         </div>
 
