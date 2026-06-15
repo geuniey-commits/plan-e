@@ -77,17 +77,17 @@ function MainPage() {
 
       <main className="max-w-5xl mx-auto">
         <div className="grid grid-cols-2 gap-6 mb-10">
-          <section className="bg-white rounded-3xl shadow-xl p-6 h-90">
+          <section className="bg-white rounded-3xl shadow-xl p-6 h-93">
             <h2 className="text-2xl font-bold text-sky-500 mb-4">
               📅 달력
             </h2>
 
-            <div className="h-65">
+            <div className="h-68">
               <CalendarComponent />
             </div>
           </section>
 
-          <section className="bg-white rounded-3xl shadow-xl p-6 h-90">
+          <section className="bg-white rounded-3xl shadow-xl p-6 h-93">
             <h2 className="text-2xl font-bold text-sky-500 mb-4">
               할 일 입력
             </h2>
