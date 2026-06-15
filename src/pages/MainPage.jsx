@@ -69,7 +69,7 @@ function MainPage() {
 
   return (
     <div className="min-h-screen bg-slate-50 p-10">
-      <header className="mb-8">
+      <header className="mb-10 text-center">
         <h1 className="text-4xl font-bold text-sky-500">PlanE</h1>
 
         <p className="text-slate-500 mt-2">오늘의 일정을 관리해 보세요!</p>
