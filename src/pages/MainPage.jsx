@@ -67,25 +67,25 @@ function MainPage() {
   };
 
   return (
-    <div className="min-h-screen bg-pink-50 p-10">
+    <div className="min-h-screen bg-slate-50 p-10">
       <header className="mb-8">
-        <h1 className="text-4xl font-bold text-pink-500">PlanE</h1>
+        <h1 className="text-4xl font-bold text-sky-500">PlanE</h1>
 
-        <p className="text-pink-400 mt-2">오늘의 일정을 관리해보세요</p>
+        <p className="text-slate-500 mt-2">오늘의 일정을 관리해보세요</p>
       </header>
 
       <main className="max-w-5xl mx-auto">
         <div className="grid grid-cols-2 gap-6 mb-6">
           <section className="bg-white rounded-3xl shadow-xl p-6 h-72">
-            <h2 className="text-2xl font-bold text-pink-500 mb-4">달력</h2>
+            <h2 className="text-2xl font-bold text-sky-500 mb-4">달력</h2>
 
-            <div className="h-48 bg-pink-100 rounded-2xl flex items-center justify-center text-pink-500">
+            <div className="h-48 bg-sky-50 rounded-2xl flex items-center justify-center text-sky-500">
               Calendar
             </div>
           </section>
 
           <section className="bg-white rounded-3xl shadow-xl p-6 h-72">
-            <h2 className="text-2xl font-bold text-pink-500 mb-4">
+            <h2 className="text-2xl font-bold text-sky-500 mb-4">
               할 일 입력
             </h2>
 
@@ -99,7 +99,7 @@ function MainPage() {
                   handleAddTodo();
                 }
               }}
-              className="w-full border border-pink-300 rounded-xl p-3 mb-4 outline-none focus:border-pink-500 focus:ring-2 focus:ring-pink-100"
+              className="w-full border border-slate-200 rounded-xl p-3 mb-4 outline-none focus:border-sky-400 focus:ring-2 focus:ring-sky-100"
             />
 
             <button
@@ -107,8 +107,8 @@ function MainPage() {
               disabled={!todo.trim()}
               className={`w-full py-3 rounded-xl text-white font-semibold transition-all duration-200 ${
                 todo.trim()
-                  ? "bg-pink-400 hover:bg-pink-500 cursor-pointer"
-                  : "bg-pink-400 opacity-40 cursor-not-allowed"
+                  ? "bg-sky-500 hover:bg-sky-600 cursor-pointer"
+                  : "bg-sky-500 opacity-40 cursor-not-allowed"
               }`}
             >
               작성
@@ -117,23 +117,23 @@ function MainPage() {
         </div>
 
         <section className="bg-white rounded-3xl shadow-xl p-6">
-          <h2 className="text-2xl font-bold text-pink-500 mb-4">
+          <h2 className="text-2xl font-bold text-sky-500 mb-4">
             할 일 목록
           </h2>
 
           {todos.length === 0 ? (
-            <div className="bg-pink-100 rounded-2xl p-4 text-pink-500">
+            <div className="bg-sky-50 rounded-2xl p-4 text-sky-500">
               아직 등록된 할 일이 없습니다.
             </div>
           ) : (
             <div className="space-y-3">
               {todos.map((todo) => (
-                <div key={todo.id} className="bg-pink-100 rounded-2xl p-4">
+                <div key={todo.id} className="bg-sky-50 rounded-2xl p-4">
                   <div className="flex items-center justify-between">
                     <div className="flex items-center gap-3 flex-1">
                       <button
                         onClick={() => handleToggleComplete(todo.id)}
-                        className="w-6 h-6 rounded-full border border-pink-500 bg-white flex items-center justify-center text-pink-500"
+                        className="w-6 h-6 rounded-full border border-sky-500 bg-white flex items-center justify-center text-sky-500"
                       >
                         {todo.completed ? "✓" : ""}
                       </button>
@@ -151,14 +151,14 @@ function MainPage() {
                                 handleSaveEdit(todo.id);
                               }
                             }}
-                            className="w-full border border-pink-300 rounded-lg px-3 py-2 outline-none focus:border-pink-500"
+                            className="w-full border border-slate-200 rounded-lg px-3 py-2 outline-none focus:border-sky-400 focus:ring-2 focus:ring-sky-100"
                           />
                         ) : (
                           <p
                             className={
                               todo.completed
-                                ? "line-through text-pink-300"
-                                : "text-pink-600"
+                                ? "line-through text-slate-400"
+                                : "text-slate-700"
                             }
                           >
                             {todo.text}
@@ -166,7 +166,7 @@ function MainPage() {
                         )}
 
                         {todo.emoji && (
-                          <p className="text-sm text-pink-500 mt-1">
+                          <p className="text-sm text-sky-600 mt-1">
                             오늘의 리뷰 {todo.emoji}
                           </p>
                         )}
@@ -178,14 +178,14 @@ function MainPage() {
                         <>
                           <button
                             onClick={() => handleSaveEdit(todo.id)}
-                            className="bg-white px-3 py-1 rounded-lg text-pink-500 hover:bg-pink-50"
+                            className="bg-white px-3 py-1 rounded-lg text-sky-600 hover:bg-sky-100"
                           >
                             저장
                           </button>
 
                           <button
                             onClick={handleCancelEdit}
-                            className="bg-white px-3 py-1 rounded-lg text-pink-500 hover:bg-pink-50"
+                            className="bg-white px-3 py-1 rounded-lg text-slate-500 hover:bg-slate-100"
                           >
                             취소
                           </button>
@@ -198,21 +198,21 @@ function MainPage() {
                                 selectedTodoId === todo.id ? null : todo.id
                               )
                             }
-                            className="bg-white px-3 py-1 rounded-lg text-pink-500 hover:bg-pink-50"
+                            className="bg-white px-3 py-1 rounded-lg text-sky-600 hover:bg-sky-100"
                           >
                             리뷰
                           </button>
 
                           <button
                             onClick={() => handleStartEdit(todo)}
-                            className="bg-white px-3 py-1 rounded-lg text-pink-500 hover:bg-pink-50"
+                            className="bg-white px-3 py-1 rounded-lg text-sky-600 hover:bg-sky-100"
                           >
                             수정
                           </button>
 
                           <button
                             onClick={() => handleDeleteTodo(todo.id)}
-                            className="bg-white px-3 py-1 rounded-lg text-pink-500 hover:bg-pink-50"
+                            className="bg-white px-3 py-1 rounded-lg text-slate-500 hover:bg-slate-100"
                           >
                             삭제
                           </button>
@@ -227,7 +227,7 @@ function MainPage() {
                         <button
                           key={emoji}
                           onClick={() => handleSelectEmoji(todo.id, emoji)}
-                          className="bg-white w-9 h-9 rounded-full hover:bg-pink-50"
+                          className="bg-white w-9 h-9 rounded-full hover:bg-sky-100"
                         >
                           {emoji}
                         </button>

@@ -40,7 +40,7 @@ function SignupPage() {
 
         {success && (
           <div className="mb-4 bg-sky-100 text-sky-700 p-3 rounded-xl text-center">
-            회원가입이 완료되었습니다!
+            ✅ 회원가입이 완료되었습니다!
           </div>
         )}
 
