@@ -1,16 +1,27 @@
-# React + Vite
+# PlanE
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+오늘의 일정을 관리할 수 있는 Todo & Calendar 웹앱
 
-Currently, two official plugins are available:
+## 주요 기능
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+- 로그인 페이지
+- 회원가입 페이지
+- 달력 조회
+- 월 이동
+- 날짜별 일정 등록
+- 일정 수정
+- 일정 삭제
+- 일정 완료 체크
+- 리뷰 이모지 작성
 
-## React Compiler
+## 기술 스택
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+- React
+- Vite
+- Tailwind CSS
 
-## Expanding the ESLint configuration
+## 실행 방법
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+```bash
+npm install
+npm run dev
