@@ -16,6 +16,8 @@ function MainPage() {
 
   const emojiList = ["😊", "😍", "😐", "😭", "🔥", "😴"];
 
+  const selectedTodos = todos.filter((todo) => todo.date === selectedDate);
+
   const handleAddTodo = () => {
     if (todo.trim() === "") return;
 
@@ -132,7 +134,7 @@ function MainPage() {
             </button>
 
             <p className="mt-4 text-sm text-slate-400 text-center">
-              Enter 키를 눌러도 할 일을 추가할 수 있어요
+              Enter 키를 눌러도 할 일을 추가할 수 있어요.
             </p>
           </section>
         </div>
@@ -142,13 +144,13 @@ function MainPage() {
             할 일 목록
           </h2>
 
-          {todos.length === 0 ? (
+          {selectedTodos.length === 0 ? (
             <div className="bg-sky-50 rounded-2xl p-4 text-sky-500">
               아직 등록된 할 일이 없습니다.
             </div>
           ) : (
             <div className="space-y-3">
-              {todos.map((todo) => (
+              {selectedTodos.map((todo) => (
                 <div key={todo.id} className="bg-sky-50 rounded-2xl p-4">
                   <div className="flex items-center justify-between">
                     <div className="flex items-center gap-3 flex-1">
@@ -186,9 +188,6 @@ function MainPage() {
                           </p>
                         )}
 
-                        <p className="text-sm text-slate-400 mt-1">
-                          {todo.date}
-                        </p>
 
                         {todo.emoji && (
                           <p className="text-sm text-sky-600 mt-1">
