@@ -13,11 +13,17 @@ function MainPage() {
   const handleAddTodo = () => {
     if (todo.trim() === "") return;
 
+    const today = new Date();
+
     const newTodo = {
       id: Date.now(),
       text: todo,
       completed: false,
       emoji: "",
+      date: `${today.getFullYear()}-${String(today.getMonth() + 1).padStart(
+      2,
+      "0"
+      )}-${String(today.getDate()).padStart(2, "0")}`,
     };
 
     setTodos([...todos, newTodo]);
@@ -83,7 +89,7 @@ function MainPage() {
             </h2>
 
             <div className="h-68">
-              <CalendarComponent />
+              <CalendarComponent todos={todos} />
             </div>
           </section>
 

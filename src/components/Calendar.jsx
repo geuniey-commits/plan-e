@@ -1,6 +1,6 @@
 import { useState } from "react";
 
-function CalendarComponent() {
+function CalendarComponent({ todos }) {
   const [currentDate, setCurrentDate] = useState(new Date());
 
   const days = ["일", "월", "화", "수", "목", "금", "토"];
@@ -30,6 +30,14 @@ function CalendarComponent() {
       month === today.getMonth() &&
       date === today.getDate()
     );
+  };
+
+  const hasTodo = (date) => {
+    const calendarDate = `${year}-${String(month + 1).padStart(2, "0")}-${String(
+      date
+    ).padStart(2, "0")}`;
+
+    return todos.some((todo) => todo.date === calendarDate);
   };
 
   return (
@@ -68,13 +76,21 @@ function CalendarComponent() {
         {dates.map((date) => (
           <button
             key={date}
-            className={`h-7 rounded-full text-xs ${
+            className={`h-7 rounded-full text-xs flex flex-col items-center justify-center ${
               isToday(date)
                 ? "bg-sky-500 text-white font-bold shadow-md"
                 : "text-slate-600 hover:bg-sky-100"
             }`}
           >
-            {date}
+            <span>{date}</span>
+
+            {hasTodo(date) && (
+              <span
+                className={`w-1 h-1 rounded-full mt-0.5 ${
+                  isToday(date) ? "bg-white" : "bg-sky-500"
+                }`}
+              />
+            )}
           </button>
         ))}
       </div>
