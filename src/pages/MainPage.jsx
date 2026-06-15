@@ -24,7 +24,9 @@ function MainPage() {
   const handleToggleComplete = (id) => {
     setTodos(
       todos.map((todo) =>
-        todo.id === id ? { ...todo, completed: !todo.completed } : todo
+        todo.id === id
+          ? { ...todo, completed: !todo.completed }
+          : todo
       )
     );
   };
@@ -32,7 +34,9 @@ function MainPage() {
   const handleSelectEmoji = (id, emoji) => {
     setTodos(
       todos.map((todo) =>
-        todo.id === id ? { ...todo, emoji } : todo
+        todo.id === id
+          ? { ...todo, emoji }
+          : todo
       )
     );
 
@@ -46,26 +50,37 @@ function MainPage() {
 
     setTodos(
       todos.map((todo) =>
-        todo.id === id ? { ...todo, text: newText } : todo
+        todo.id === id
+          ? { ...todo, text: newText }
+          : todo
       )
     );
   };
 
   const handleDeleteTodo = (id) => {
-    setTodos(todos.filter((todo) => todo.id !== id));
+    setTodos(
+      todos.filter((todo) => todo.id !== id)
+    );
   };
 
   return (
     <div className="min-h-screen bg-pink-50 p-10">
       <header className="mb-8">
-        <h1 className="text-4xl font-bold text-pink-400">PlanE</h1>
-        <p className="text-pink-300 mt-2">오늘의 일정을 관리해보세요</p>
+        <h1 className="text-4xl font-bold text-pink-400">
+          PlanE
+        </h1>
+
+        <p className="text-pink-300 mt-2">
+          오늘의 일정을 관리해보세요
+        </p>
       </header>
 
       <main className="max-w-5xl mx-auto">
         <div className="grid grid-cols-2 gap-6 mb-6">
           <section className="bg-white rounded-3xl shadow-lg p-6 h-72">
-            <h2 className="text-2xl font-bold text-pink-400 mb-4">달력</h2>
+            <h2 className="text-2xl font-bold text-pink-400 mb-4">
+              달력
+            </h2>
 
             <div className="h-48 bg-pink-100 rounded-2xl flex items-center justify-center text-pink-400">
               Calendar
@@ -82,7 +97,12 @@ function MainPage() {
               placeholder="할 일을 입력하세요"
               value={todo}
               onChange={(event) => setTodo(event.target.value)}
-              className="w-full border border-pink-200 rounded-xl p-3 mb-4"
+              onKeyDown={(event) => {
+                if (event.key === "Enter") {
+                  handleAddTodo();
+                }
+              }}
+              className="w-full border border-pink-200 rounded-xl p-3 mb-4 outline-none focus:border-pink-400 focus:ring-2 focus:ring-pink-100"
             />
 
             <button
@@ -95,7 +115,9 @@ function MainPage() {
         </div>
 
         <section className="bg-white rounded-3xl shadow-lg p-6">
-          <h2 className="text-2xl font-bold text-pink-400 mb-4">할 일 목록</h2>
+          <h2 className="text-2xl font-bold text-pink-400 mb-4">
+            할 일 목록
+          </h2>
 
           {todos.length === 0 ? (
             <div className="bg-pink-100 rounded-2xl p-4 text-pink-400">
@@ -104,11 +126,16 @@ function MainPage() {
           ) : (
             <div className="space-y-3">
               {todos.map((todo) => (
-                <div key={todo.id} className="bg-pink-100 rounded-2xl p-4">
+                <div
+                  key={todo.id}
+                  className="bg-pink-100 rounded-2xl p-4"
+                >
                   <div className="flex items-center justify-between">
                     <div className="flex items-center gap-3">
                       <button
-                        onClick={() => handleToggleComplete(todo.id)}
+                        onClick={() =>
+                          handleToggleComplete(todo.id)
+                        }
                         className="w-6 h-6 rounded-full border border-pink-400 bg-white flex items-center justify-center text-pink-400"
                       >
                         {todo.completed ? "✓" : ""}
@@ -135,21 +162,31 @@ function MainPage() {
 
                     <div className="flex gap-2">
                       <button
-                        onClick={() => setSelectedTodoId(todo.id)}
+                        onClick={() =>
+                          setSelectedTodoId(
+                            selectedTodoId === todo.id
+                              ? null
+                              : todo.id
+                          )
+                        }
                         className="bg-white px-3 py-1 rounded-lg hover:bg-pink-50"
                       >
                         리뷰
                       </button>
 
                       <button
-                        onClick={() => handleEditTodo(todo.id)}
+                        onClick={() =>
+                          handleEditTodo(todo.id)
+                        }
                         className="bg-white px-3 py-1 rounded-lg text-pink-400 hover:bg-pink-50"
                       >
                         수정
                       </button>
 
                       <button
-                        onClick={() => handleDeleteTodo(todo.id)}
+                        onClick={() =>
+                          handleDeleteTodo(todo.id)
+                        }
                         className="bg-white px-3 py-1 rounded-lg text-pink-400 hover:bg-pink-50"
                       >
                         삭제
@@ -162,7 +199,12 @@ function MainPage() {
                       {emojiList.map((emoji) => (
                         <button
                           key={emoji}
-                          onClick={() => handleSelectEmoji(todo.id, emoji)}
+                          onClick={() =>
+                            handleSelectEmoji(
+                              todo.id,
+                              emoji
+                            )
+                          }
                           className="bg-white w-9 h-9 rounded-full hover:bg-pink-50"
                         >
                           {emoji}
