@@ -1,16 +1,35 @@
+import api from "../api/axios";
 import { useState } from "react";
 import { Link, useNavigate } from "react-router";
 
 function SignupPage() {
   const navigate = useNavigate();
+  const [username, setUsername] = useState("");
+  const [password, setPassword] = useState("");
   const [success, setSuccess] = useState(false);
+  
 
-  const handleSignup = () => {
-    setSuccess(true);
+  const handleSignup = async () => {
+    try {
+      const res = await api.post("/api/members/register", {
+        username,
+        password,
+      });
 
-    setTimeout(() => {
-      navigate("/");
-    }, 1500);
+      console.log("회원가입된 member_id:", res.data.member_id);
+
+      setSuccess(true);
+
+      setTimeout(() => {
+        navigate("/");
+      }, 1500);
+    } catch (err) {
+      if (err.response?.status === 400) {
+        alert(err.response.data.message);
+      } else {
+        alert("회원가입 실패");
+      }
+    }
   };
 
   return (
@@ -29,12 +48,16 @@ function SignupPage() {
         <input
           type="text"
           placeholder="아이디"
+          value={username}
+          onChange={(e) => setUsername(e.target.value)}
           className="w-full border border-slate-200 rounded-xl p-3 mb-4 outline-none focus:border-sky-400 focus:ring-2 focus:ring-sky-100"
         />
 
         <input
           type="password"
           placeholder="비밀번호"
+          value={password}
+          onChange={(e) => setPassword(e.target.value)}
           className="w-full border border-slate-200 rounded-xl p-3 mb-6 outline-none focus:border-sky-400 focus:ring-2 focus:ring-sky-100"
         />
 
