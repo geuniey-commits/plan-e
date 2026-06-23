@@ -1,7 +1,13 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { useLocation, useNavigate } from "react-router";
 import CalendarComponent from "../components/Calendar";
+import api from "../api/axios";
 
 function MainPage() {
+  const navigate = useNavigate();
+  const location = useLocation();
+  const memberId = location.state?.memberId;
+
   const today = new Date();
   const todayString = `${today.getFullYear()}-${String(
     today.getMonth() + 1
@@ -16,37 +22,101 @@ function MainPage() {
 
   const emojiList = ["😊", "😍", "😐", "😭", "🔥", "😴"];
 
-  const selectedTodos = todos.filter((todo) => todo.date === selectedDate);
+  const convertTodo = (todo) => ({
+    id: todo.todo_id,
+    text: todo.content,
+    completed: todo.is_checked,
+    emoji: todo.emoji,
+    date: todo.date.split("T")[0],
+  });
 
-  const handleAddTodo = () => {
+  const getMonthAndDay = (dateString) => {
+  const [, month, day] = dateString.split("-");
+
+  return {
+    month: Number(month),
+    day: Number(day),
+  };
+};
+
+  const fetchTodos = async () => {
+    if (!memberId) return;
+
+    try {
+      const { month, day } = getMonthAndDay(selectedDate);
+
+      console.log("selectedDate:", selectedDate);
+      console.log("month:", month);
+      console.log("day:", day);
+
+      const res = await api.get(`/api/members/${memberId}/todos/daily`, {
+        params: {
+          month,
+          day,
+        },
+      });
+
+      console.log("response:", res.data);
+
+      setTodos(res.data.map(convertTodo));
+    } catch (err) {
+      console.log(err);
+      alert(err.response?.data?.message || "투두 조회 실패");
+    }
+  };
+
+    
+  useEffect(() => {
+    if (!memberId) {
+      alert("로그인이 필요합니다.");
+      navigate("/");
+      return;
+    }
+
+    fetchTodos();
+  }, [memberId, selectedDate]);
+
+  const handleAddTodo = async () => {
     if (todo.trim() === "") return;
 
-    const newTodo = {
-      id: Date.now(),
-      text: todo,
-      completed: false,
-      emoji: "",
-      date: selectedDate,
-    };
+    try {
+      const res = await api.post(`/api/members/${memberId}/todos`, {
+      date: `${selectedDate}T18:30:00.000000`,
+      content: todo,
+      });
 
-    setTodos([...todos, newTodo]);
-    setTodo("");
+      console.log("POST 응답", res.data);
+
+      setTodo("");
+      fetchTodos();
+    } catch (err) {
+      console.log(err);
+      alert(err.response?.data?.message || "투두 작성 실패");
+    }
   };
 
-  const handleToggleComplete = (id) => {
-    setTodos(
-      todos.map((todo) =>
-        todo.id === id ? { ...todo, completed: !todo.completed } : todo
-      )
-    );
+  const handleToggleComplete = async (id) => {
+    try {
+      await api.patch(`/api/members/${memberId}/todos/${id}/check`);
+      fetchTodos();
+    } catch (err) {
+      console.log(err);
+      alert(err.response?.data?.message || "완료 변경 실패");
+    }
   };
 
-  const handleSelectEmoji = (id, emoji) => {
-    setTodos(
-      todos.map((todo) => (todo.id === id ? { ...todo, emoji } : todo))
-    );
+  const handleSelectEmoji = async (id, emoji) => {
+    try {
+      await api.patch(`/api/members/${memberId}/todos/${id}/reviews`, {
+        emoji,
+      });
 
-    setSelectedTodoId(null);
+      setSelectedTodoId(null);
+      fetchTodos();
+    } catch (err) {
+      console.log(err);
+      alert(err.response?.data?.message || "리뷰 등록 실패");
+    }
   };
 
   const handleStartEdit = (todo) => {
@@ -54,17 +124,22 @@ function MainPage() {
     setEditingText(todo.text);
   };
 
-  const handleSaveEdit = (id) => {
+  const handleSaveEdit = async (id) => {
     if (editingText.trim() === "") return;
 
-    setTodos(
-      todos.map((todo) =>
-        todo.id === id ? { ...todo, text: editingText } : todo
-      )
-    );
+    try {
+      await api.patch(`/api/members/${memberId}/todos/${id}`, {
+        date: `${selectedDate}T18:30:00.000000`,
+        content: editingText,
+      });
 
-    setEditingTodoId(null);
-    setEditingText("");
+      setEditingTodoId(null);
+      setEditingText("");
+      fetchTodos();
+    } catch (err) {
+      console.log(err);
+      alert(err.response?.data?.message || "투두 수정 실패");
+    }
   };
 
   const handleCancelEdit = () => {
@@ -72,23 +147,29 @@ function MainPage() {
     setEditingText("");
   };
 
-  const handleDeleteTodo = (id) => {
-    setTodos(todos.filter((todo) => todo.id !== id));
+  const handleDeleteTodo = async (id) => {
+    try {
+      await api.delete(`/api/members/${memberId}/todos/${id}`);
+      fetchTodos();
+    } catch (err) {
+      console.log(err);
+      alert(err.response?.data?.message || "투두 삭제 실패");
+    }
   };
 
   return (
     <div className="min-h-screen bg-slate-50 p-10">
       <header className="mb-10 text-center">
-        <h1 className="text-5xl font-extrabold text-sky-500 font-['Outfit'] tracking-tight">PlanE</h1>
+        <h1 className="text-5xl font-extrabold text-sky-500 font-['Outfit'] tracking-tight">
+          PlanE
+        </h1>
         <p className="text-slate-500 mt-2">오늘의 일정을 관리해 보세요!</p>
       </header>
 
       <main className="max-w-5xl mx-auto">
         <div className="grid grid-cols-2 gap-6 mb-10">
           <section className="bg-white rounded-3xl shadow-xl p-6 h-93">
-            <h2 className="text-2xl font-bold text-sky-500 mb-4">
-              📅 달력
-            </h2>
+            <h2 className="text-2xl font-bold text-sky-500 mb-4">📅 달력</h2>
 
             <div className="h-68">
               <CalendarComponent
@@ -114,9 +195,7 @@ function MainPage() {
               value={todo}
               onChange={(event) => setTodo(event.target.value)}
               onKeyDown={(event) => {
-                if (event.key === "Enter") {
-                  handleAddTodo();
-                }
+                if (event.key === "Enter") handleAddTodo();
               }}
               className="w-full border border-slate-200 rounded-xl p-3 mb-4 outline-none focus:border-sky-400 focus:ring-2 focus:ring-sky-100"
             />
@@ -140,17 +219,15 @@ function MainPage() {
         </div>
 
         <section className="bg-white rounded-3xl shadow-xl p-6">
-          <h2 className="text-2xl font-bold text-sky-500 mb-4">
-            할 일 목록
-          </h2>
+          <h2 className="text-2xl font-bold text-sky-500 mb-4">할 일 목록</h2>
 
-          {selectedTodos.length === 0 ? (
+          {todos.length === 0 ? (
             <div className="bg-sky-50 rounded-2xl p-4 text-sky-500">
               아직 등록된 할 일이 없습니다.
             </div>
           ) : (
             <div className="space-y-3">
-              {selectedTodos.map((todo) => (
+              {todos.map((todo) => (
                 <div key={todo.id} className="bg-sky-50 rounded-2xl p-4">
                   <div className="flex items-center justify-between">
                     <div className="flex items-center gap-3 flex-1">
@@ -187,7 +264,6 @@ function MainPage() {
                             {todo.text}
                           </p>
                         )}
-
 
                         {todo.emoji && (
                           <p className="text-sm text-sky-600 mt-1">

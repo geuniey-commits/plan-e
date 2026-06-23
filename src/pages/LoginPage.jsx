@@ -17,17 +17,19 @@ function LoginPage() {
 
       console.log(res.data);
 
-      localStorage.setItem("memberId", res.data.member_id);
-
-      navigate("/main");
-    } catch (err) {
-      if (err.response?.data?.message) {
-        alert(err.response.data.message);
-      } else {
-        alert("로그인 실패");
-      }
+      navigate("/main", {
+      state: {
+        memberId: res.data.member_id,
+      },
+    });
+  } catch (err) {
+    if (err.response?.data?.message) {
+      alert(err.response.data.message);
+    } else {
+      alert("로그인 실패");
     }
-  };
+  }
+};
 
   return (
     <div className="min-h-screen bg-slate-50 flex justify-center items-center">
